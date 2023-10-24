@@ -18,7 +18,7 @@
 ## Key Features
 
 - **Easy to use:** Run `zs` select your project from [`Zoxide`](https://github.com/ajeetdsouza/zoxide) list using [`fzf`](https://github.com/junegunn/fzf), select preferable layout;
-- **Usage inside zellij session:** It will create a new tab with selected layout;
+- **Usage inside zellij session:** It will create a new tab with the selected layout;
 - **Attach to the session:** Will not ask for layout when the session was previously created;
 - **Layout config preview:** Layout config preview will be shown using [`bat`](https://github.com/sharkdp/bat) if installed or `cat` as a fallback
 
@@ -44,7 +44,7 @@ sudo chmod +x ./zs
 sudo ln -s $(echo "$(pwd)/zs") /usr/bin/zs
 ```
 
-4. Populate your `Zoxide` database by simply going into directories that you want to start session from.
+4. Populate your `Zoxide` database by simply going into the directories that you want to start the session from.
 
 _Quick tip_: If you want to remove some paths from your `Zoxide` DB you can use this simple command:
 
@@ -52,7 +52,7 @@ _Quick tip_: If you want to remove some paths from your `Zoxide` DB you can use 
 zoxide remove $(zoxide query -l | fzf -m)
 ```
 
-Select options that you want to remove by pression `Tab` and they will be deleted from DB
+Select options that you want to remove by pressing `Tab` and they will be deleted from DB
 
 5. (Optional) Create an alias to call this script in your shells `.rs` config
 
@@ -68,35 +68,35 @@ You just need to type this command in your shell to start a new session
 zs
 ```
 
-Or `^f` if you've setted up optional keybinding step
+Or `^f` if you've set up an optional keybinding step
 
-Next will be provided different types of scenatios of the script execution.
+Next will be provided different types of scenarios of the script execution.
 
-### Outside of Zellij (session doesn't exists)
+### Outside of Zellij (session doesn't exist)
 
-You will be offered with paths from `Zoxide`. After selection it will give you a layout selection for the session if your layout directory is not empty. It uses `LAYOUT DIR` path that is provided to `Zellij` setup.
+You will be offered paths from `Zoxide`. After selection, it will give you a layout selection for the session if your layout directory is not empty. It uses the `LAYOUT DIR` path provided to `Zellij` setup.
 
-After that it will open session with a zoxide path's `basename` and selected layout.
+After that, it will open a session with a zoxide path's `basename` and selected layout.
 
 ### Outside of Zellij (session exists)
 
-You will be offered with paths from `Zoxide`. After seleting the layout step will be skipped and you will be attached to `Zellij` session.
+You will be offered paths from `Zoxide`. After selecting a path, the layout step will be skipped and you will be attached to `Zellij` session.
 
 ### Inside Zellij
 
-If you run this script inside `Zellij` you will be offered with the same selection steps. But after selection it will open new tab with the selected session `basename` and Layout
+If you run this script inside `Zellij` you will be offered the same selection steps. But after selection, it will open a new tab with the selected session `basename` and Layout
 
-_Feature_: Not all layouts will be provided in this case, It's kinda smart and will not provide layouts that contains `tabs` options inside it, because you cannot create tabs inside tab.
+_Feature_: Not all layouts will be provided in this case, It's kinda smart and will not provide layouts that contain `tabs` options inside it, because you cannot create tabs inside the tab.
 
 ### Passing session name argument
 
-Also you can provide optional argument to the script
+Also, you can provide optional arguments to the script
 
 ```sh
 zs some-name
 ```
 
-It will pick up this argument and will init session with this name instead of path's `basename`. It's very usefull if you want to have several different sessions that was initialized from the same directory
+It will pick up this argument and will init session with this name instead of the path's `basename`. It's very useful if you want to have several different sessions that were initialized from the same directory
 
 ## Inspirations
 
