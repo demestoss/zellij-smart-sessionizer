@@ -44,11 +44,9 @@ sudo chmod +x ./zs
 sudo ln -s $(echo "$(pwd)/zs") /usr/bin/zs
 ```
 
-3. Populate your `Zoxide` database by simply going into directories that you want to start session from.
+4. Populate your `Zoxide` database by simply going into directories that you want to start session from.
 
-### Quick tip
-
-If you want to remove some paths from your `Zoxide` DB you can use this simple command:
+_Quick tip_: If you want to remove some paths from your `Zoxide` DB you can use this simple command:
 
 ```sh
 zoxide remove $(zoxide query -l | fzf -m)
@@ -56,7 +54,7 @@ zoxide remove $(zoxide query -l | fzf -m)
 
 Select options that you want to remove by pression `Tab` and they will be deleted from DB
 
-4. (Optional) Create an alias to call this script in your shells `.rs` config
+5. (Optional) Create an alias to call this script in your shells `.rs` config
 
 ```sh
 bindkey -s ^f "zs"
