@@ -37,7 +37,7 @@ git clone https://github.com/demestoss/zellij-sessionizerz
 cd zellij-sessionizerz
 ```
 
-3. Place [zs](https://github.com/demestoss/zellij-sessionizerz/blob/main/zs) script in your `PATH`. One of the ways:
+3. Place [zs](https://github.com/demestoss/zellij-sessionizerz/blob/master/zs) script in your `PATH`. One of the ways:
 
 ```
 sudo chmod +x ./zs
