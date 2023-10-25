@@ -96,8 +96,12 @@ get_tab_layout() {
     echo $(select_layout "$layouts_for_tabs")
 }
 
-if [ $ZELLIJ = 0 ]; then
-    zellij action new-pane -f
+zellij_sessionizer_name="Zellij SessionizerZ"
+
+# If we inside Zellij and this is not a Zellij SessionizerZ pane
+# We will open floating window with Zellij SessionizerZ command
+if [ $ZELLIJ = 0 ] && [$ZELLIJ_SESSION_NAME -ne $zellij_sessionizer_name]; then
+    zellij action new-pane -f --name "$zellij_sessionizer_name" -- zs
     exit 0
 fi
 
@@ -110,7 +114,7 @@ fi
 session_name=$(get_session_name "$project_dir" "$1")
 
 # Outside Zellij session
-if [ $ZELLIJ != 0 ]; then
+if [[ -z $ZELLIJ ]]; then
     session=$(zellij list-sessions | grep "^$session_name$")
 
     cd $project_dir
