@@ -107,7 +107,7 @@ Currently I'm working on Zellij plugin to integrate with Zellij in a better way 
 Special thanks to this repos:
 
 - [zellij-sessionizer](https://github.com/silicakes/zellij-sessionizer/tree/main)
-- [tmux-session-wizard](https://github.com/27medkamal/tmux-session-wizard)
+- [t](https://github.com/joshmedeski/t-smart-tmux-session-manager)
 
 ## License
 
