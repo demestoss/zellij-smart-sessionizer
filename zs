@@ -96,6 +96,11 @@ get_tab_layout() {
     echo $(select_layout "$layouts_for_tabs")
 }
 
+if [ $ZELLIJ = 0 ]; then
+    zellij action new-pane -f
+    exit 0
+fi
+
 project_dir=$(select_project_dir)
 
 if [ "$project_dir" = "" ]; then
@@ -104,7 +109,8 @@ fi
 
 session_name=$(get_session_name "$project_dir" "$1")
 
-if [[ -z $ZELLIJ ]]; then
+# Outside Zellij session
+if [ $ZELLIJ != 0 ]; then
     session=$(zellij list-sessions | grep "^$session_name$")
 
     cd $project_dir
