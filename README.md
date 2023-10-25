@@ -93,10 +93,14 @@ _Feature_: Not all layouts will be provided in this case, It's kinda smart and w
 Also, you can provide optional arguments to the script
 
 ```sh
-zs some-name
+zs session-name
 ```
 
 It will pick up this argument and will init session with this name instead of the path's `basename`. It's very useful if you want to have several different sessions that were initialized from the same directory
+
+## Next steps of this repo
+
+Currently I'm working on Zellij plugin to integrate with Zellij in a better way and have ability to switch sessions inside Zellij
 
 ## Inspirations
 
