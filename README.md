@@ -57,7 +57,7 @@ Select options that you want to remove by pressing `Tab` and they will be delete
 5. (Optional) Create an alias to call this script in your shells `.rs` config
 
 ```sh
-bindkey -s ^f "zs"
+bindkey -s ^f "zs^M"
 ```
 
 ## Usage
@@ -68,7 +68,7 @@ You just need to type this command in your shell to start a new session
 zs
 ```
 
-Or `^f` if you've set up an optional keybinding step
+Or `Ctrl+f` if you've set up an optional keybinding step
 
 Next will be provided different types of scenarios of the script execution.
 
@@ -88,7 +88,7 @@ If you run this script inside `Zellij` you will be offered the same selection st
 
 _Feature_: Not all layouts will be provided in this case, It's kinda smart and will not provide layouts that contain `tabs` options inside it, because you cannot create tabs inside the tab.
 
-### Passing session name argument
+## Passing session name argument
 
 Also, you can provide optional arguments to the script
 
