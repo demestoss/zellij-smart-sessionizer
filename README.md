@@ -13,6 +13,7 @@
 - [Key Features](#key-features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Quick Tips](#quick-tips)
 - [Inspirations](#inspirations)
 
 ## Key Features
@@ -45,14 +46,6 @@ sudo ln -s $(echo "$(pwd)/zs") /usr/bin/zellij-smart-sessionizer
 ```
 
 4. Populate your `Zoxide` database by simply going into the directories that you want to start the session from. Check [`Zoxide`](https://github.com/ajeetdsouza/zoxide) docs for more info.
-
-_Quick tip_: If you want to remove some paths from your `Zoxide` DB you can use this simple command:
-
-```sh
-zoxide remove $(zoxide query -l | fzf -m)
-```
-
-Select options that you want to remove by pressing `Tab` and they will be deleted from DB
 
 5. (Recommended) I like to create alias for the script to have an ability to easily execute it. Place it into your shell's `.rc` file:
 
@@ -111,6 +104,16 @@ zs session-name
 ```
 
 It will pick up this argument and will init session with this name instead of the path's `basename`. It's very useful if you want to have several different sessions that were initialized from the same directory
+
+## Quick Tips
+I was always strugling with removing directories from Zoxide DB, so I finally found the right solution and want to share it here :)
+
+If you want to remove some paths from your `Zoxide` DB you can use this simple command:
+
+```sh
+zoxide remove $(zoxide query -l | fzf -m)
+```
+Select options that you want to remove by pressing `Tab` and they will be deleted from DB
 
 ## Next steps of this repo
 
