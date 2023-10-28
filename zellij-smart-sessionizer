@@ -10,11 +10,6 @@ if [ "$(command -v zoxide)" = "" ]; then
     exit 1
 fi
 
-if [ "$(command -v sk)" ="" ] || [ "$(command -v fzf)" = "" ]; then
-    echo "Fuzzy finder is not installed. Please install sk or fzf"
-    exit 1
-fi
-
 get_fuzzy_cmd() {
     if [ -x "$(command -v sk)" ]; then
         echo "sk"
