@@ -5,7 +5,7 @@
 </div>
 
 <div align="center">
-    Instant Zellij session startup powered by Zoxide and fzf
+    Instant Zellij session startup powered by Zoxide and fzf/skim
 </div>
 
 [![zellij smart sessionizer demo](https://asciinema.org/a/617601.svg)](https://asciinema.org/a/617601)
@@ -20,7 +20,7 @@
 
 ## Key Features
 
-- **Easy to use:** Run `zs` or `Ctrl+f` in your shell select your project from [`Zoxide`](https://github.com/ajeetdsouza/zoxide) list using [`fzf`](https://github.com/junegunn/fzf), select preferable layout;
+- **Easy to use:** Run `zs` or `Ctrl+f` in your shell select your project from [`Zoxide`](https://github.com/ajeetdsouza/zoxide) list using [`fzf`](https://github.com/junegunn/fzf) or [`skim`](https://github.com/lotabout/skim), select preferable layout;
 - **Usage inside zellij session:** It will create a new tab with the selected layout;
 - **Attach to the session:** Will not ask for layout when the session was previously created;
 - **Layout config preview:** Layout config preview will be shown using [`bat`](https://github.com/sharkdp/bat) if installed or `cat` as a fallback
@@ -30,7 +30,7 @@
 1. Install all dependencies
 
    - [Zoxide](https://github.com/ajeetdsouza/zoxide)
-   - [fzf](https://github.com/junegunn/fzf)
+   - [skim](https://github.com/lotabout/skim) or [fzf](https://github.com/junegunn/fzf). Similar libraries, `skim` has higher priority
    - [bat](https://github.com/junegunn/fzf) - optional dependency
 
 2. Clone the repo
@@ -108,6 +108,7 @@ zs session-name
 It will pick up this argument and will init session with this name instead of the path's `basename`. It's very useful if you want to have several different sessions that were initialized from the same directory
 
 ## Quick Tips
+
 I was always strugling with removing directories from Zoxide DB, so I finally found the right solution and want to share it here :)
 
 If you want to remove some paths from your `Zoxide` DB you can use this simple command:
@@ -115,11 +116,8 @@ If you want to remove some paths from your `Zoxide` DB you can use this simple c
 ```sh
 zoxide remove $(zoxide query -l | fzf -m)
 ```
+
 Select options that you want to remove by pressing `Tab` and they will be deleted from DB
-
-## Next steps of this repo
-
-Currently I'm working on Zellij plugin to integrate with Zellij in a better way and have ability to switch sessions inside Zellij
 
 ## Inspirations
 

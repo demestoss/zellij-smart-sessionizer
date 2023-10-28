@@ -1,5 +1,36 @@
 #!/usr/bin/env bash
 
+if [ "$(command -v zellij)" = "" ]; then
+    echo "Zellij is not installed"
+    exit 1
+fi
+
+if [ "$(command -v zoxide)" = "" ]; then
+    echo "Zoxide is not installed"
+    exit 1
+fi
+
+if [ "$(command -v sk)" ="" ] || [ "$(command -v fzf)" = "" ]; then
+    echo "Fuzzy finder is not installed. Please install sk or fzf"
+    exit 1
+fi
+
+get_fuzzy_cmd() {
+    if [ -x "$(command -v sk)" ]; then
+        echo "sk"
+    else
+        echo "fzf"
+    fi
+}
+
+get_preview_cmd() {
+    if [ -x "$(command -v bat)" ]; then
+        echo "bat"
+    else
+        echo "cat"
+    fi
+}
+
 select_project_dir() {
     HOME_REPLACER=""                                          # default to a noop
     echo "$HOME" | grep -E "^[a-zA-Z0-9\-_/.@]+$" &>/dev/null # chars safe to use in sed
@@ -8,7 +39,7 @@ select_project_dir() {
         HOME_REPLACER="s|^$HOME/|~/|"
     fi
 
-    project_dir=$(zoxide query -l | fzf --reverse)
+    project_dir=$(zoxide query -l | $(get_fuzzy_cmd) --reverse)
 
     if [ "$project_dir" = "" ]; then # no result
         echo ""
@@ -50,11 +81,7 @@ get_layouts_list() {
 select_layout() {
     layouts=$1
 
-    if [ -x "$(command -v bat)" ]; then
-        layout_path=$(echo "$layouts" | fzf --reverse --preview 'bat {}')
-    else
-        layout_path=$(echo "$layouts" | fzf --reverse --preview 'cat {}')
-    fi
+    layout_path=$(echo "$layouts" | $(get_fuzzy_cmd) --reverse --preview "$(get_preview_cmd) {}")
 
     if [ "$layout_path" = "" ]; then
         echo ""
@@ -104,6 +131,7 @@ fi
 
 session_name=$(get_session_name "$project_dir" "$1")
 
+# If we outside of zellij initialize session and attach to it, or just attach to it
 if [[ -z $ZELLIJ ]]; then
     session=$(zellij list-sessions | grep "^$session_name$")
 
@@ -124,7 +152,7 @@ if [[ -z $ZELLIJ ]]; then
     exit 0
 fi
 
-
+# If we inside of zellij create new tab with layout
 layout=$(get_tab_layout)
 
 if [ "$layout" = "" ]; then
