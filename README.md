@@ -8,6 +8,8 @@
     Instant Zellij session startup powered by Zoxide and fzf
 </div>
 
+[![zellij smart sessionizer demo](https://asciinema.org/a/617601.svg)](https://asciinema.org/a/617601)
+
 ## Table of Contents
 
 - [Key Features](#key-features)
