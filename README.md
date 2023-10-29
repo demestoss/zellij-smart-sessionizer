@@ -96,13 +96,13 @@ _Note_: Not all layouts will be provided in this case, It's kinda smart and will
 
 ## Usage inside Neovim
 
-I like to have this keymap in my Neovim config to run seissionizer inside floating pane:
+I like to have this keymap in my Neovim config to run sessionizer inside floating pane:
 
 ```lua
 vim.keymap.set("n", "<C-f>", ":silent !zellij action new-pane -f -c -- zellij-smart-sessionizer<CR>", { silent = true })
 ```
 
-It will open Zellij floating window with sessionizer script inside
+By pressing `Ctrl+f` inside Neovim you will open floting window with sessionizer script
 
 ## Passing session name argument
 
