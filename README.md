@@ -12,26 +12,27 @@
 
 ## Table of Contents
 
-- [Key Features](#key-features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Quick Tips](#quick-tips)
-- [Inspirations](#inspirations)
+-   [Key Features](#key-features)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Usage inside Neovim](#usage-inside-neovim)
+-   [Quick Tips](#quick-tips)
+-   [Inspirations](#inspirations)
 
 ## Key Features
 
-- **Easy to use:** Run `zs` or `Ctrl+f` in your shell select your project from [`Zoxide`](https://github.com/ajeetdsouza/zoxide) list using [`fzf`](https://github.com/junegunn/fzf) or [`skim`](https://github.com/lotabout/skim), select preferable layout;
-- **Usage inside zellij session:** It will create a new tab with the selected layout;
-- **Attach to the session:** Will not ask for layout when the session was previously created;
-- **Layout config preview:** Layout config preview will be shown using [`bat`](https://github.com/sharkdp/bat) if installed or `cat` as a fallback
+-   **Easy to use:** Run `zs` or `Ctrl+f` in your shell select your project from [`Zoxide`](https://github.com/ajeetdsouza/zoxide) list using [`fzf`](https://github.com/junegunn/fzf) or [`skim`](https://github.com/lotabout/skim), select preferable layout;
+-   **Usage inside zellij session:** It will create a new tab with the selected layout;
+-   **Attach to the session:** Will not ask for layout when the session was previously created;
+-   **Layout config preview:** Layout config preview will be shown using [`bat`](https://github.com/sharkdp/bat) if installed or `cat` as a fallback
 
 ## Installation
 
 1. Install all dependencies
 
-   - [Zoxide](https://github.com/ajeetdsouza/zoxide)
-   - [skim](https://github.com/lotabout/skim) or [fzf](https://github.com/junegunn/fzf) - fuzzy finders, `skim` has higher priority
-   - [bat](https://github.com/junegunn/fzf) - optional dependency
+    - [Zoxide](https://github.com/ajeetdsouza/zoxide)
+    - [skim](https://github.com/lotabout/skim) or [fzf](https://github.com/junegunn/fzf) - fuzzy finders, `skim` has higher priority
+    - [bat](https://github.com/junegunn/fzf) - optional dependency
 
 2. Clone the repo
 
@@ -93,6 +94,16 @@ If you run this script inside `Zellij` you will be offered the same selection st
 
 _Note_: Not all layouts will be provided in this case, It's kinda smart and will not provide layouts that contain `tabs` options inside it, because you cannot create tabs inside the tab.
 
+## Usage inside Neovim
+
+I like to have this keymap in my Neovim config to run seissionizer inside floating pane:
+
+```lua
+vim.keymap.set("n", "<C-f>", ":silent !zellij action new-pane -f -c -- zellij-smart-sessionizer<CR>", { silent = true })
+```
+
+It will open Zellij floating window with sessionizer script inside
+
 ## Passing session name argument
 
 Also, you can provide optional arguments to the script
@@ -123,8 +134,8 @@ Select options that you want to remove by pressing `Tab` and they will be delete
 
 Special thanks to this repos:
 
-- [zellij-sessionizer](https://github.com/silicakes/zellij-sessionizer/tree/main)
-- [t](https://github.com/joshmedeski/t-smart-tmux-session-manager)
+-   [zellij-sessionizer](https://github.com/silicakes/zellij-sessionizer/tree/main)
+-   [t](https://github.com/joshmedeski/t-smart-tmux-session-manager)
 
 ## License
 
