@@ -34,7 +34,7 @@ select_project_dir() {
         HOME_REPLACER="s|^$HOME/|~/|"
     fi
 
-    project_dir=$(zoxide query -l | $(get_fuzzy_cmd) --reverse)
+    project_dir=$(zoxide query -l | sed -e "$HOME_REPLACER"  | $(get_fuzzy_cmd) --reverse)
 
     if [ "$project_dir" = "" ]; then # no result
         echo ""
@@ -119,6 +119,7 @@ get_tab_layout() {
 }
 
 project_dir=$(select_project_dir)
+echo "$project_dir"
 
 if [ "$project_dir" = "" ]; then
     exit 0
