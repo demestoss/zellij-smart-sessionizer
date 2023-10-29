@@ -5,7 +5,7 @@
 </div>
 
 <div align="center">
-    Instant Zellij session startup powered by Zoxide and fzf/skim
+    Instant Zellij session startup powered by Zoxide and fuzzy finder
 </div>
 
 [![zellij smart sessionizer demo](https://asciinema.org/a/617601.svg)](https://asciinema.org/a/617601)
@@ -30,7 +30,7 @@
 1. Install all dependencies
 
    - [Zoxide](https://github.com/ajeetdsouza/zoxide)
-   - [skim](https://github.com/lotabout/skim) or [fzf](https://github.com/junegunn/fzf). Similar libraries, `skim` has higher priority
+   - [skim](https://github.com/lotabout/skim) or [fzf](https://github.com/junegunn/fzf) - fuzzy finders, `skim` has higher priority
    - [bat](https://github.com/junegunn/fzf) - optional dependency
 
 2. Clone the repo
@@ -44,18 +44,18 @@ cd zellij-smart-sessionizer
 
 ```
 sudo chmod +x ./zellij-smart-sessionizer
-sudo ln -s $(echo "$(pwd)/zs") /usr/bin/zellij-smart-sessionizer
+sudo ln -s $(echo "$(pwd)/zellij-smart-sessionizer") /usr/bin/zellij-smart-sessionizer
 ```
 
 4. Populate your `Zoxide` database by simply going into the directories that you want to start the session from. Check [`Zoxide`](https://github.com/ajeetdsouza/zoxide) docs for more info.
 
-5. (Recommended) I like to create alias for the script to have an ability to easily execute it. Place it into your shell's `.rc` file:
+5. **(Recommended)** I like to create alias for the script to have an ability to easily execute it. Place it into your shell's `.rc` file:
 
 ```sh
 alias zs="zellij-smart-sessionizer"
 ```
 
-6. (Optional) Create an alias to call this script in your shells `.rs` config
+6. **(Optional)** Create an alias to call this script in your shells `.rs` config
 
 ```sh
 bindkey -s ^f "zellij-smart-sessionizer^M"
@@ -68,7 +68,7 @@ You just need to type this command in your shell to start a new session
 ```sh
 zellij-smart-sessionizer
 
-// or just this command if you have done (5) step of installation process
+# or just this command if you have done (5) step of installation process
 
 zs
 ```
@@ -91,7 +91,7 @@ You will be offered paths from `Zoxide`. After selecting a path, the layout step
 
 If you run this script inside `Zellij` you will be offered the same selection steps. But after selection, it will open a new tab with the selected session `basename` and Layout
 
-_Feature_: Not all layouts will be provided in this case, It's kinda smart and will not provide layouts that contain `tabs` options inside it, because you cannot create tabs inside the tab.
+_Note_: Not all layouts will be provided in this case, It's kinda smart and will not provide layouts that contain `tabs` options inside it, because you cannot create tabs inside the tab.
 
 ## Passing session name argument
 
@@ -100,7 +100,7 @@ Also, you can provide optional arguments to the script
 ```sh
 zellij-smart-sessionizer session-name
 
-// or
+# or
 
 zs session-name
 ```

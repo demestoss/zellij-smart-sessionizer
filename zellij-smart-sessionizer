@@ -20,7 +20,7 @@ get_fuzzy_cmd() {
 
 get_preview_cmd() {
     if [ -x "$(command -v bat)" ]; then
-        echo "bat"
+        echo "bat --color=always"
     else
         echo "cat"
     fi
