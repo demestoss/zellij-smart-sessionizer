@@ -26,25 +26,34 @@ get_preview_cmd() {
     fi
 }
 
-select_project_dir() {
+home_replacer() {
     HOME_REPLACER=""                                          # default to a noop
     echo "$HOME" | grep -E "^[a-zA-Z0-9\-_/.@]+$" &>/dev/null # chars safe to use in sed
     HOME_SED_SAFE=$?
     if [ $HOME_SED_SAFE -eq 0 ]; then # $HOME should be safe to use in sed
         HOME_REPLACER="s|^$HOME/|~/|"
     fi
+    echo "$HOME_REPLACER"
+}
 
-    project_dir=$(zoxide query -l | sed -e "$HOME_REPLACER"  | $(get_fuzzy_cmd) --reverse)
-
-    if [ "$project_dir" = "" ]; then # no result
-        echo ""
-        exit                 # exit silently
-    fi
-
+transform_home_path() {
+    HOME_SED_SAFE=$?
     if [ $HOME_SED_SAFE -eq 0 ]; then
-        project_dir=$(echo "$project_dir" | sed -e "s|^~/|$HOME/|") # get real home path back
+        echo "$1" | sed -e "s|^$HOME/|~/|"
+    else
+        echo "$1"
     fi
-    echo "$project_dir"
+}
+
+select_project_dir() {
+    project_dir=$(zoxide query -l | sed -e $(home_replacer)  | $(get_fuzzy_cmd) --reverse)
+
+    if [ "$project_dir" = "" ]; then
+        echo ""
+        exit
+    fi
+
+    echo "$(transform_home_path "$project_dir")"
 }
 
 get_session_name() {
@@ -70,7 +79,7 @@ get_layouts_list() {
     fi
 
     layouts=$(find $layout_dir | tail -n+2)
-    echo $layouts
+    echo "$layouts"
 }
 
 select_layout() {
@@ -119,7 +128,6 @@ get_tab_layout() {
 }
 
 project_dir=$(select_project_dir)
-echo "$project_dir"
 
 if [ "$project_dir" = "" ]; then
     exit 0
