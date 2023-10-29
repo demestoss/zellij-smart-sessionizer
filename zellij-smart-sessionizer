@@ -39,7 +39,7 @@ home_replacer() {
 transform_home_path() {
     HOME_SED_SAFE=$?
     if [ $HOME_SED_SAFE -eq 0 ]; then
-        echo "$1" | sed -e "s|^$HOME/|~/|"
+        echo "$1" | sed -e "s|^~/|$HOME/|"
     else
         echo "$1"
     fi
