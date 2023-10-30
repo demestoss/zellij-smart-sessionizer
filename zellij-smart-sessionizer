@@ -46,7 +46,8 @@ transform_home_path() {
 }
 
 select_project_dir() {
-    project_dir=$(zoxide query -l | sed -e $(home_replacer)  | $(get_fuzzy_cmd) --reverse)
+    header="Select session"
+    project_dir=$(zoxide query -l | sed -e $(home_replacer)  | $(get_fuzzy_cmd) --reverse --header "$header")
 
     if [ "$project_dir" = "" ]; then
         echo ""
@@ -84,8 +85,10 @@ get_layouts_list() {
 
 select_layout() {
     layouts=$1
+    session_name=$2
 
-    layout_path=$(echo "$layouts" | $(get_fuzzy_cmd) --reverse --preview "$(get_preview_cmd) {}")
+    header="Select layout for '$session_name'"
+    layout_path=$(echo "$layouts" | $(get_fuzzy_cmd) --reverse --header "$header" --tabstop=4 --ansi --preview "$(get_preview_cmd) {}")
 
     if [ "$layout_path" = "" ]; then
         echo ""
@@ -97,16 +100,18 @@ select_layout() {
 }
 
 get_session_layout() {
+    session_name=$1
     layouts=$(get_layouts_list)
     if [ "$layouts" = "" ]; then
         echo "default"
         exit
     fi
     layouts=$(echo "default $layouts" | tr ' ' '\n')
-    echo $(select_layout "$layouts")
+    echo $(select_layout "$layouts" "$session_name")
 }
 
 get_tab_layout() {
+    session_name=$1
     layouts=$(get_layouts_list)
     if [ "$layouts" = "" ]; then
         echo "default"
@@ -124,7 +129,7 @@ get_tab_layout() {
     done
 
     layouts_for_tabs=$(echo "$layouts_for_tabs" | tr ' ' '\n')
-    echo $(select_layout "$layouts_for_tabs")
+    echo $(select_layout "$layouts_for_tabs" "$session_name")
 }
 
 project_dir=$(select_project_dir)
@@ -142,7 +147,7 @@ if [[ -z $ZELLIJ ]]; then
     cd $project_dir
 
     if [ "$session" = "" ]; then
-        layout=$(get_session_layout)
+        layout=$(get_session_layout "$session_name")
 
         if [ "$layout" = "" ]; then
             exit 0
@@ -157,7 +162,7 @@ if [[ -z $ZELLIJ ]]; then
 fi
 
 # If we inside of zellij create new tab with layout
-layout=$(get_tab_layout)
+layout=$(get_tab_layout "$session_name")
 
 if [ "$layout" = "" ]; then
     exit 0
