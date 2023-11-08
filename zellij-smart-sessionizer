@@ -142,7 +142,7 @@ session_name=$(get_session_name "$project_dir" "$1")
 
 # If we outside of zellij initialize session and attach to it, or just attach to it
 if [[ -z $ZELLIJ ]]; then
-    session=$(zellij list-sessions | grep "^$session_name$")
+    session=$(zellij list-sessions | grep "$session_name")
 
     cd $project_dir
 
