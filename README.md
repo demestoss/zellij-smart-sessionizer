@@ -26,37 +26,26 @@
 -   **Attach to the session:** Will not ask for layout when the session was previously created;
 -   **Layout config preview:** Layout config preview will be shown using [`bat`](https://github.com/sharkdp/bat) if installed or `cat` as a fallback
 
+## Installation as a bash script **(the old way)**
+
+You can use the steps from [Bash CLI Readme](./cli/README.md) to install it as a bash CLI command
+
 ## Installation
 
-1. Install all dependencies
+1. Install the dependencies
 
     - [Zoxide](https://github.com/ajeetdsouza/zoxide)
-    - [skim](https://github.com/lotabout/skim) or [fzf](https://github.com/junegunn/fzf) - fuzzy finders, `skim` has higher priority
     - [bat](https://github.com/junegunn/fzf) - optional dependency
 
-2. Clone the repo
+2. Install sessionizer using Cargo
 
 ```
-git clone https://github.com/demestoss/zellij-smart-sessionizer
-cd zellij-smart-sessionizer
+cargo install zellij-smart-sessionizer --locked
 ```
 
-3. Place [zellij-smart-sessionizer](https://github.com/demestoss/zellij-smart-sessionizer/blob/master/zellij-smart-sessionizer) script in your `PATH`. One of the ways:
+3. Populate your `Zoxide` database by simply going into the directories that you want to start the session from. Check [`Zoxide`](https://github.com/ajeetdsouza/zoxide) docs for more info.
 
-```
-sudo chmod +x ./zellij-smart-sessionizer
-sudo ln -s $(echo "$(pwd)/zellij-smart-sessionizer") /usr/bin/zellij-smart-sessionizer
-```
-
-4. Populate your `Zoxide` database by simply going into the directories that you want to start the session from. Check [`Zoxide`](https://github.com/ajeetdsouza/zoxide) docs for more info.
-
-5. **(Recommended)** I like to create alias for the script to have an ability to easily execute it. Place it into your shell's `.rc` file:
-
-```sh
-alias zs="zellij-smart-sessionizer"
-```
-
-6. **(Optional)** Create an alias to call this script in your shells `.rs` config
+4. **(Optional)** Create an alias to call this script in your shells `.rs` config
 
 ```sh
 bindkey -s ^f "zellij-smart-sessionizer^M"
@@ -67,10 +56,6 @@ bindkey -s ^f "zellij-smart-sessionizer^M"
 You just need to type this command in your shell to start a new session
 
 ```sh
-zellij-smart-sessionizer
-
-# or just this command if you have done (5) step of installation process
-
 zs
 ```
 
