@@ -45,16 +45,37 @@ transform_home_path() {
     fi
 }
 
-select_project_dir() {
-    header="Select session"
-    project_dir=$(zoxide query -l | sed -e $(home_replacer)  | $(get_fuzzy_cmd) --reverse --header "$header")
+select_session_dir() {
+    current_sessions=$1
+    zoxide_list=$(zoxide query -l)
+
+    if [ "$current_sessions" = "" ]; then
+        list="$zoxide_list"
+    else
+        list=$(echo "$current_sessions $zoxide_list" | tr ' ' '\n')
+    fi
+
+    header="Select session:"
+    project_dir=$(echo "$list" | sed -e "$(home_replacer)" | $(get_fuzzy_cmd) --reverse --header "$header")
 
     if [ "$project_dir" = "" ]; then
         echo ""
         exit
     fi
 
-    echo "$(transform_home_path "$project_dir")"
+    transform_home_path "$project_dir"
+}
+
+select_tab_dir() {
+    header="Select tab directory:"
+    project_dir=$(zoxide query -l | sed -e "$(home_replacer)" | $(get_fuzzy_cmd) --reverse --header "$header")
+
+    if [ "$project_dir" = "" ]; then
+        echo ""
+        exit
+    fi
+
+    transform_home_path "$project_dir"
 }
 
 get_session_name() {
@@ -79,7 +100,7 @@ get_layouts_list() {
         exit
     fi
 
-    layouts=$(find $layout_dir | tail -n+2)
+    layouts=$(find "$layout_dir" | tail -n+2)
     echo "$layouts"
 }
 
@@ -88,15 +109,26 @@ select_layout() {
     session_name=$2
 
     header="Select layout for '$session_name'"
-    layout_path=$(echo "$layouts" | $(get_fuzzy_cmd) --reverse --header "$header" --tabstop=4 --ansi --preview "$(get_preview_cmd) {}")
+    layout_path=$(
+        {
+            echo "$layouts" |
+                awk '{
+          full = $0
+          bn = full
+          sub(/^.*\//, "", bn)
+          sub(/\.[^.]+$/, "", bn)
+          print full "\t" bn
+        }'
+            echo -e "default\tdefault"
+        } | $(get_fuzzy_cmd) --with-nth=2 --reverse --header "$header" --tabstop=4 --ansi --preview="$(get_preview_cmd) {1}" | cut -f1
+    )
 
     if [ "$layout_path" = "" ]; then
         echo ""
         exit
     fi
 
-    layout=$(basename "$layout_path" | sed 's/\.kdl$//')
-    echo $layout
+    echo "$layout_path"
 }
 
 get_session_layout() {
@@ -106,8 +138,7 @@ get_session_layout() {
         echo "default"
         exit
     fi
-    layouts=$(echo "default $layouts" | tr ' ' '\n')
-    echo $(select_layout "$layouts" "$session_name")
+    select_layout "$layouts" "$session_name"
 }
 
 get_tab_layout() {
@@ -118,34 +149,34 @@ get_tab_layout() {
         exit
     fi
 
-    layouts_for_tabs="default"
+    layouts_for_tabs=""
     for layout in $layouts; do
         # filtering layouts with "tab" keyword to avoid having tabs in tabs
         # Maybe there is a better way to do this
-        has_tab=$(cat $layout | grep "tab ")
+        has_tab=$(grep "tab " "$layout")
         if [ "$has_tab" = "" ]; then
             layouts_for_tabs="$layouts_for_tabs $layout"
         fi
     done
 
     layouts_for_tabs=$(echo "$layouts_for_tabs" | tr ' ' '\n')
-    echo $(select_layout "$layouts_for_tabs" "$session_name")
+
+    select_layout "$layouts_for_tabs" "$session_name"
 }
 
-project_dir=$(select_project_dir)
+# If we outside of Zellij initialize session and attach to it, or just attach to it
+outside_zellij() {
+    sessions_list=$(zellij list-sessions -s)
 
-if [ "$project_dir" = "" ]; then
-    exit 0
-fi
+    project_dir=$(select_session_dir "$sessions_list")
+    if [ "$project_dir" = "" ]; then
+        exit 0
+    fi
 
-session_name=$(get_session_name "$project_dir" "$1")
+    session_name=$(get_session_name "$project_dir" "$1")
+    session=$(echo "$sessions_list" | grep "^$session_name$")
 
-# If we outside of zellij initialize session and attach to it, or just attach to it
-if [[ -z $ZELLIJ ]]; then
-    session=$(zellij list-sessions | grep "$session_name")
-
-    cd $project_dir
-
+    # If no session, create with the default layout
     if [ "$session" = "" ]; then
         layout=$(get_session_layout "$session_name")
 
@@ -153,21 +184,40 @@ if [[ -z $ZELLIJ ]]; then
             exit 0
         fi
 
-        zellij -s $session_name --layout $layout options --default-cwd $project_dir
+        zellij --session "$session_name" --new-session-with-layout "$layout" options --default-cwd "$project_dir"
         exit 0
     fi
 
-    zellij attach $session_name -c options --default-cwd $project_dir
+    zellij attach "$session_name"
     exit 0
-fi
 
-# If we inside of zellij create new tab with layout
-layout=$(get_tab_layout "$session_name")
+}
 
-if [ "$layout" = "" ]; then
-    exit 0
-fi
+# If we inside of Zellij create new tab with layout
+inside_zellij() {
+    project_dir=$(select_tab_dir)
+    if [ "$project_dir" = "" ]; then
+        exit 0
+    fi
 
-zellij action new-tab --layout $layout --name $session_name --cwd $project_dir
-zellij action go-to-tab-name $session_name
+    tab_name=$(get_session_name "$project_dir" "$1")
 
+    layout=$(get_tab_layout "$tab_name")
+    if [ "$layout" = "" ]; then
+        exit 0
+    fi
+
+    zellij action new-tab --layout "$layout" --name "$tab_name" --cwd "$project_dir"
+    zellij action go-to-tab-name "$tab_name"
+}
+
+main() {
+    # Outside Zellij session
+    if [[ -z $ZELLIJ ]]; then
+        outside_zellij "$@"
+    else
+        inside_zellij "$@"
+    fi
+}
+
+main "$@"
